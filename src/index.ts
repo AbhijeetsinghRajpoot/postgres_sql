@@ -25,22 +25,44 @@ async function createUsersTable(){
         client.end
 } 
 
-createUsersTable();
+// createUsersTable();
 
-async function insertData(){
+// async function insertData(){
+//     try {
+//         // await client.connect(); // ensure connection
+//         const insertQuery = `INSERT INTO users (name, email, password) VALUES ($1,$2,$3)`;
+//         const values  =  ['Abhijeet Singh','with@sql.injection','ibmpassword']
+//         const res = await client.query(insertQuery,values);
+//         console.log("Insertion Success ",res);
+//     } catch (error) {
+//         console.log("error during inserstion",error)
+//     } finally{
+//         await client.end();
+//     }
+
+// }
+
+// insertData();
+
+async function getUserByEmail(email:string){
     try {
-        // await client.connect(); // ensure connection
-        const insertQuery = `INSERT INTO users (name, email, password) VALUES ($1,$2,$3)`;
-        const values  =  ['Abhijeet Singh','with@sql.injection','ibmpassword']
-        const res = await client.query(insertQuery,values);
-        console.log("Insertion Success ",res);
+        client.connect();
+        const query = 'SELECT * FROM users WHERE email = $1';
+        const values = [email];
+        const result = await client.query(query,values);
+
+        if(result.rows.length>0){
+            console.log("user Found",result.rows[0]); // output user data
+            return result.rows[0];//return the user data
+        }else{
+            console.log("no user found with given wmail")
+        }
+        
     } catch (error) {
-        console.log("error during inserstion",error)
-    } finally{
+        console.log("error while search..",error)
+    }finally{
         await client.end();
     }
-
 }
 
-insertData();
-
+getUserByEmail("abhijeet@ibm.com");
