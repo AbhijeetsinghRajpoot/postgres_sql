@@ -30,8 +30,9 @@ createUsersTable();
 async function insertData(){
     try {
         // await client.connect(); // ensure connection
-        const insertQuery = `INSERT INTO users (name, email, password) VALUES ('Abhijeet','abhijeet@ibm.com','ibmpassword')`
-        const res = await client.query(insertQuery);
+        const insertQuery = `INSERT INTO users (name, email, password) VALUES ($1,$2,$3)`;
+        const values  =  ['Abhijeet Singh','with@sql.injection','ibmpassword']
+        const res = await client.query(insertQuery,values);
         console.log("Insertion Success ",res);
     } catch (error) {
         console.log("error during inserstion",error)
